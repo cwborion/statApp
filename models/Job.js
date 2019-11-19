@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const JobSchema = new mongoose.Schema({
-  // Confirm this is everything that should be in schema*****
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user'
@@ -18,7 +17,7 @@ const JobSchema = new mongoose.Schema({
     type: String
     // required: true
   },
-  skills: {
+  skillsPreferred: {
     type: String
     // required: true
   },
