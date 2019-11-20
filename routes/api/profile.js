@@ -100,4 +100,90 @@ router.get('/user/:user_id', async (req, res) => {
   }
 });
 
+// @route   DELETE api/profile
+// @desc    Delete profile and user
+// @access  Private
+
+router.delete('/', auth, async (req, res) => {
+  try {
+    // Remove profile
+    await Profile.findOneAndRemove({ user: req.user.id });
+    // Remove user
+    await User.findOneAndRemove({ _id: req.user.id });
+
+    res.json({ msg: 'User deleted' });
+  } catch (err) {
+    console.err(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+// @route   PUT api/profile/job
+// @desc    Add job to profile
+// @access  Private
+router.put(
+  '/job',
+  [
+    auth,
+    [
+      check('jobTitle', 'Job title is required')
+        .not()
+        .isEmpty(),
+      check('employer', 'Employer is required')
+        .not()
+        .isEmpty(),
+      check('skillsPreferred', 'Skills are required')
+        .not()
+        .isEmpty(),
+      check('dateApplied', 'Date applied is required')
+        .not()
+        .isEmpty()
+    ]
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const {
+      jobTitle,
+      employer,
+      jobDescription,
+      skillsPreferred = skillsPreferred.split(',').map(skill => skill.trim()),
+      dateApplied,
+      notes
+    } = req.body;
+    console.log(skillsPreferred);
+    const newJob = {
+      jobTitle,
+      employer,
+      jobDescription,
+      skillsPreferred,
+      dateApplied,
+      notes
+    };
+
+    // FIGURE THIS
+    // if (skillsPreferred) {
+    //   newJob.skillsPreferred = skillsPreferred
+    //     .split(',')
+    //     .map(skill => skill.trim());
+    // }
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id });
+
+      profile.jobs.unshift(newJob);
+
+      await profile.save();
+
+      res.json(profile);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
 module.exports = router;
