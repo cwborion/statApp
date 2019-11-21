@@ -20,7 +20,7 @@ const ProfileSchema = new mongoose.Schema({
         // required: true
       },
       skillsPreferred: {
-        type: String
+        type: [String]
         // required: true
       },
       dateApplied: {

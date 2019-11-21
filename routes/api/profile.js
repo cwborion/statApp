@@ -150,26 +150,23 @@ router.put(
       jobTitle,
       employer,
       jobDescription,
-      skillsPreferred = skillsPreferred.split(',').map(skill => skill.trim()),
+      skillsPreferred,
       dateApplied,
       notes
     } = req.body;
-    console.log(skillsPreferred);
+
+    skills = skillsPreferred.split(',').map(skill => skill.trim());
+
+    console.log(skills);
+
     const newJob = {
       jobTitle,
       employer,
       jobDescription,
-      skillsPreferred,
+      skillsPreferred: skills,
       dateApplied,
       notes
     };
-
-    // FIGURE THIS
-    // if (skillsPreferred) {
-    //   newJob.skillsPreferred = skillsPreferred
-    //     .split(',')
-    //     .map(skill => skill.trim());
-    // }
 
     try {
       const profile = await Profile.findOne({ user: req.user.id });
@@ -185,5 +182,27 @@ router.put(
     }
   }
 );
+
+// @route   DELETE api/profile/job/:job_id
+// @desc    Delete job from profile
+// @access  Private
+router.delete('/job/:job_id', auth, async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.user.id });
+
+    // Get remove index
+    const removeIndex = profile.jobs
+      .map(item => item.id)
+      .indexOf(req.params.job_id);
+    profile.jobs.splice(removeIndex, 1);
+
+    await profile.save();
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 module.exports = router;
