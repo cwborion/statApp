@@ -5,26 +5,30 @@ const ProfileSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user'
   },
+  goalJob: {
+    type: String,
+    required: true
+  },
   jobs: [
     {
       jobTitle: {
-        type: String
-        // required: true
+        type: String,
+        required: true
       },
       employer: {
-        type: String
-        // required: true
+        type: String,
+        required: true
       },
       jobDescription: {
-        type: String
-        // required: true
+        type: String,
+        required: true
       },
       skillsPreferred: {
-        type: [String]
-        // required: true
+        type: [String],
+        required: true
       },
       dateApplied: {
-        // required: true
+        required: true,
         type: Date
       },
       notes: {

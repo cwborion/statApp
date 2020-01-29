@@ -21,7 +21,7 @@ const Dashboard = ({
     <Fragment>
       <h1 className='large text-primary'>Dashboard</h1>
       <p className='lead'>
-        <i className='fas fa-user'></i> Welcome {user && user.name}
+        <i className='fas fa-user'></i> Welcome to AppStat {user && user.name}
       </p>
       {profile !== null ? (
         <Fragment>
@@ -29,9 +29,13 @@ const Dashboard = ({
         </Fragment>
       ) : (
         <Fragment>
-          <p>You have not yet setup a profile, please add some info</p>
+          <p>
+            This is place where you can log and keep track of jobs you have
+            applied to and are following the status of. Let's get a little more
+            information before you begin
+          </p>
           <Link to='/create-profile' className='btn btn-primary my-1'>
-            Create Profile
+            Continue
           </Link>
         </Fragment>
       )}
