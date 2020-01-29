@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import DashboardActions from './DashboardActions';
+import Job from './Job';
 import { getCurrentProfile } from '../../actions/profile';
+
+// 'job' as a property used below is the array of jobs in the state
 
 const Dashboard = ({
   getCurrentProfile,
@@ -26,6 +29,7 @@ const Dashboard = ({
       {profile !== null ? (
         <Fragment>
           <DashboardActions />
+          <Job job={profile.jobs} />
         </Fragment>
       ) : (
         <Fragment>
