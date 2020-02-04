@@ -2,10 +2,11 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
+import { deleteJob } from '../../actions/profile';
 
 // 'job' as a property used below is the array of jobs in the state
 
-const Job = ({ job }) => {
+const Job = ({ job, deleteJob }) => {
   const jobs = job.map(job => (
     <tr key={job._id}>
       <td>{job.employer}</td>
@@ -17,7 +18,9 @@ const Job = ({ job }) => {
       <td>{job.jobDescription}</td>
       <td>{job.notes}</td>
       <td>
-        <button className='btn btn-danger'>Delete</button>
+        <button onClick={() => deleteJob(job._id)} className='btn btn-danger'>
+          Delete
+        </button>
       </td>
     </tr>
   ));
@@ -44,7 +47,8 @@ const Job = ({ job }) => {
 };
 
 Job.propTypes = {
-  job: PropTypes.array.isRequired
+  job: PropTypes.array.isRequired,
+  deleteJob: PropTypes.func.isRequired
 };
 
-export default connect()(Job);
+export default connect(null, { deleteJob })(Job);
